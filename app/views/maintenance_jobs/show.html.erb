@@ -1,0 +1,43 @@
+<div class="w-full">
+  <h1 class="text-2xl font-bold mb-4">Maintenance Job on <%= @car.year %> <%= @car.make %> <%= @car.model %></h1>
+
+  <p><strong>Date:</strong> <%= @maintenance_job.date.strftime("%B %d, %Y") %></p>
+  <p><strong>Mileage:</strong> <%= @maintenance_job.mileage %></p>
+  <p><strong>Description:</strong> <%= @maintenance_job.description %></p>
+  <h3 class="font-bold mt-4">Costs</h3>
+  <table class="table-auto w-full mb-4">
+    <thead>
+      <tr class="text-left">
+        <th class="px-4 py-2">Item</th>
+        <th class="px-4 py-2">Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="border px-4 py-2">Labor</td>
+        <td class="border px-4 py-2"><%= number_to_currency(@maintenance_job.price) %></td>
+      </tr>
+      <% @maintenance_job.parts.each do |part| %>
+        <tr>
+          <td class="border px-4 py-2"><%= part.name %></td>
+          <td class="border px-4 py-2"><%= number_to_currency(part.price) %></td>
+        </tr>
+      <% end %>
+      <tr class="font-bold">
+        <td class="border px-4 py-2">Total</td>
+        <td class="border px-4 py-2"><%= number_to_currency(@maintenance_job.total_cost) %></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <% if @maintenance_job.receipt.attached? %>
+    <div class="mt-4">
+      <h3 class="text-lg font-bold">Receipt</h3>
+      <%= image_tag @maintenance_job.receipt, class: "max-w-full h-auto" %>
+    </div>
+  <% end %>
+
+
+  <%= link_to 'Edit', edit_car_maintenance_job_path(@car, @maintenance_job), class: "text-yellow-500 hover:underline mt-4 inline-block" %>
+  <%= link_to 'Back to Car', car_path(@car), class: "text-blue-500 hover:underline mt-4 inline-block" %>
+</div>

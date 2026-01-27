@@ -1,0 +1,92 @@
+<%= form_with(model: [car, maintenance_job], local: true, class: "w-full max-w-lg") do |form| %>
+  <% if maintenance_job.errors.any? %>
+    <div id="error_explanation" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold">Holy smokes!</strong>
+      <span class="block sm:inline"><%= pluralize(maintenance_job.errors.count, "error") %> prohibited this maintenance_job from being saved:</span>
+      <ul>
+        <% maintenance_job.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="flex flex-wrap -mx-3 mb-6">
+    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+      <%= form.label :date, class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
+      <%= form.datetime_select :date, {}, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" %>
+    </div>
+    <div class="w-full md:w-1/2 px-3">
+      <%= form.label :mileage, class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
+      <%= form.number_field :mileage, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" %>
+    </div>
+  </div>
+  <div class="flex flex-wrap -mx-3 mb-6">
+    <div class="w-full px-3">
+      <%= form.label :description, class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
+      <%= form.text_area :description, rows: 4, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" %>
+    </div>
+  </div>
+  <div class="flex flex-wrap -mx-3 mb-6">
+    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+      <%= form.label :price, class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
+      <%= form.text_field :price, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" %>
+    </div>
+    <div class="w-full px-3" data-controller="nested-form">
+      <%= form.label :parts, class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
+      <div id="parts" data-nested-form-target="container">
+        <%= form.fields_for :parts do |part_form| %>
+          <div class="flex flex-wrap -mx-3 mb-2 nested-fields" data-new-record="<%= part_form.object.new_record? %>">
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <%= part_form.label :name, "Part Name", class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
+              <%= part_form.text_field :name, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white", placeholder: "Part Name" %>
+            </div>
+            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <%= part_form.label :price, "Price", class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
+              <%= part_form.text_field :price, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white", placeholder: "0.00" %>
+            </div>
+            <div class="w-full md:w-1/6 px-3 flex items-center pt-6">
+              <%= part_form.hidden_field :_destroy %>
+              <button type="button" data-action="nested-form#remove" class="text-red-500 hover:text-red-700 font-bold">Remove</button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="mt-2">
+        <button type="button" data-action="nested-form#add" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">
+          Add Part
+        </button>
+      </div>
+
+      <template data-nested-form-target="template">
+        <%= form.fields_for :parts, Part.new, child_index: 'NEW_RECORD' do |part_form| %>
+          <div class="flex flex-wrap -mx-3 mb-2 nested-fields" data-new-record="true">
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <%= part_form.label :name, "Part Name", class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
+              <%= part_form.text_field :name, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white", placeholder: "Part Name" %>
+            </div>
+            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <%= part_form.label :price, "Price", class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
+              <%= part_form.text_field :price, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white", placeholder: "0.00" %>
+            </div>
+            <div class="w-full md:w-1/6 px-3 flex items-center pt-6">
+              <%= part_form.hidden_field :_destroy %>
+              <button type="button" data-action="nested-form#remove" class="text-red-500 hover:text-red-700 font-bold">Remove</button>
+            </div>
+          </div>
+        <% end %>
+      </template>
+    </div>
+  </div>
+  <div class="flex flex-wrap -mx-3 mb-6">
+    <div class="w-full px-3">
+      <%= form.label :receipt, class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
+      <%= form.file_field :receipt, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" %>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <%= form.submit class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+    <%= link_to 'Cancel', car_path(car), class: "inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" %>
+  </div>
+<% end %>

@@ -1,0 +1,80 @@
+≈ tailwindcss v4.1.18
+
+Done in 83ms
+Running 2 tests in a single process (parallelization threshold is 50)
+Run options: --seed 6106
+
+# Running:
+
+E
+
+Error:
+MaintenanceJobsTest#test_removing_a_part:
+SyntaxError: /home/jdean/.rvm/gems/ruby-3.3.0/gems/selenium-webdriver-4.40.0/lib/selenium/webdriver/chrome/driver.rb:35: anonymous keyword rest parameter is also used within block
+    test/system/maintenance_jobs_test.rb:51:in `block in <class:MaintenanceJobsTest>'
+
+Error:
+MaintenanceJobsTest#test_removing_a_part:
+SyntaxError: /home/jdean/.rvm/gems/ruby-3.3.0/gems/selenium-webdriver-4.40.0/lib/selenium/webdriver/chrome/driver.rb:35: anonymous keyword rest parameter is also used within block
+    /home/jdean/.rvm/rubies/ruby-3.3.0/lib/ruby/3.3.0/bundled_gems.rb:74:in `require'
+    /home/jdean/.rvm/rubies/ruby-3.3.0/lib/ruby/3.3.0/bundled_gems.rb:74:in `block (2 levels) in replace_require'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/bootsnap-1.21.1/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:33:in `require'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/zeitwerk-2.7.4/lib/zeitwerk/core_ext/kernel.rb:34:in `require'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/selenium-webdriver-4.40.0/lib/selenium/webdriver/common/driver.rb:47:in `for'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/selenium-webdriver-4.40.0/lib/selenium/webdriver.rb:88:in `for'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/capybara-3.40.0/lib/capybara/selenium/driver.rb:75:in `browser'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/actionpack-8.0.4/lib/action_dispatch/system_testing/driver.rb:57:in `block in register_selenium'
+    <internal:kernel>:90:in `tap'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/actionpack-8.0.4/lib/action_dispatch/system_testing/driver.rb:56:in `register_selenium'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/actionpack-8.0.4/lib/action_dispatch/system_testing/driver.rb:43:in `block in register'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/capybara-3.40.0/lib/capybara/session.rb:106:in `driver'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/capybara-3.40.0/lib/capybara/session.rb:92:in `initialize'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/capybara-3.40.0/lib/capybara.rb:422:in `new'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/capybara-3.40.0/lib/capybara.rb:422:in `block in session_pool'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/capybara-3.40.0/lib/capybara.rb:317:in `current_session'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/capybara-3.40.0/lib/capybara/dsl.rb:46:in `page'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/actionpack-8.0.4/lib/action_dispatch/system_testing/test_helpers/screenshot_helper.rb:116:in `save_image'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/actionpack-8.0.4/lib/action_dispatch/system_testing/test_helpers/screenshot_helper.rb:46:in `take_screenshot'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/actionpack-8.0.4/lib/action_dispatch/system_testing/test_helpers/screenshot_helper.rb:56:in `take_failed_screenshot'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/actionpack-8.0.4/lib/action_dispatch/system_testing/test_helpers/setup_and_teardown.rb:10:in `before_teardown'
+
+bin/rails test test/system/maintenance_jobs_test.rb:50
+
+E
+
+Error:
+MaintenanceJobsTest#test_adding_a_maintenance_job_with_dynamic_parts:
+SyntaxError: /home/jdean/.rvm/gems/ruby-3.3.0/gems/selenium-webdriver-4.40.0/lib/selenium/webdriver/chrome/driver.rb:35: anonymous keyword rest parameter is also used within block
+    test/system/maintenance_jobs_test.rb:10:in `block in <class:MaintenanceJobsTest>'
+
+Error:
+MaintenanceJobsTest#test_adding_a_maintenance_job_with_dynamic_parts:
+SyntaxError: /home/jdean/.rvm/gems/ruby-3.3.0/gems/selenium-webdriver-4.40.0/lib/selenium/webdriver/chrome/driver.rb:35: anonymous keyword rest parameter is also used within block
+    /home/jdean/.rvm/rubies/ruby-3.3.0/lib/ruby/3.3.0/bundled_gems.rb:74:in `require'
+    /home/jdean/.rvm/rubies/ruby-3.3.0/lib/ruby/3.3.0/bundled_gems.rb:74:in `block (2 levels) in replace_require'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/bootsnap-1.21.1/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:33:in `require'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/zeitwerk-2.7.4/lib/zeitwerk/core_ext/kernel.rb:34:in `require'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/selenium-webdriver-4.40.0/lib/selenium/webdriver/common/driver.rb:47:in `for'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/selenium-webdriver-4.40.0/lib/selenium/webdriver.rb:88:in `for'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/capybara-3.40.0/lib/capybara/selenium/driver.rb:75:in `browser'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/actionpack-8.0.4/lib/action_dispatch/system_testing/driver.rb:57:in `block in register_selenium'
+    <internal:kernel>:90:in `tap'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/actionpack-8.0.4/lib/action_dispatch/system_testing/driver.rb:56:in `register_selenium'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/actionpack-8.0.4/lib/action_dispatch/system_testing/driver.rb:43:in `block in register'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/capybara-3.40.0/lib/capybara/session.rb:106:in `driver'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/capybara-3.40.0/lib/capybara/session.rb:92:in `initialize'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/capybara-3.40.0/lib/capybara.rb:422:in `new'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/capybara-3.40.0/lib/capybara.rb:422:in `block in session_pool'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/capybara-3.40.0/lib/capybara.rb:317:in `current_session'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/capybara-3.40.0/lib/capybara/dsl.rb:46:in `page'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/actionpack-8.0.4/lib/action_dispatch/system_testing/test_helpers/screenshot_helper.rb:116:in `save_image'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/actionpack-8.0.4/lib/action_dispatch/system_testing/test_helpers/screenshot_helper.rb:46:in `take_screenshot'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/actionpack-8.0.4/lib/action_dispatch/system_testing/test_helpers/screenshot_helper.rb:56:in `take_failed_screenshot'
+    /home/jdean/.rvm/gems/ruby-3.3.0/gems/actionpack-8.0.4/lib/action_dispatch/system_testing/test_helpers/setup_and_teardown.rb:10:in `before_teardown'
+
+bin/rails test test/system/maintenance_jobs_test.rb:9
+
+
+
+Finished in 0.240111s, 8.3295 runs/s, 0.0000 assertions/s.
+2 runs, 0 assertions, 0 failures, 2 errors, 0 skips
