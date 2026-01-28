@@ -65,4 +65,4 @@ group :test do
   gem "minitest", "~> 5.25"
 end
 
-gem "devise", "~> 4.9"
+gem "devise", "~> 5.0"
