@@ -1,50 +1,78 @@
-<div class="w-full">
-  <h1 class="text-2xl font-bold mb-4">Maintenance Job on <%= @car.year %> <%= @car.make %> <%= @car.model %></h1>
+<div class="max-w-3xl mx-auto space-y-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Maintenance Details</h1>
+      <p class="text-sm text-gray-500 mt-1">
+        <%= @car.year %> <%= @car.make %> <%= @car.model %> &bull; <%= @maintenance_job.date.strftime("%B %d, %Y") %>
+      </p>
+    </div>
+    <div class="flex space-x-3">
+       <%= link_to 'Edit Job', edit_car_maintenance_job_path(@car, @maintenance_job), class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" %>
+       <%= link_to 'Back to Car', car_path(@car), class: "inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700" %>
+    </div>
+  </div>
 
-  <p><strong>Date:</strong> <%= @maintenance_job.date.strftime("%B %d, %Y") %></p>
-  <p><strong>Mileage:</strong> <%= @maintenance_job.mileage %></p>
-  <p><strong>Description:</strong> <%= @maintenance_job.description %></p>
-  <h3 class="font-bold mt-4">Costs</h3>
-  <table class="table-auto w-full mb-4">
-    <thead>
-      <tr class="text-left">
-        <th class="px-4 py-2">Item</th>
-        <th class="px-4 py-2">Cost</th>
-        <th class="px-4 py-2">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="border px-4 py-2">Labor</td>
-        <td class="border px-4 py-2"><%= number_to_currency(@maintenance_job.price) %></td>
-      </tr>
-      <% @maintenance_job.parts.each do |part| %>
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="p-6 border-b border-gray-100">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">Job Overview</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <p class="text-sm font-medium text-gray-500">Description</p>
+          <p class="mt-1 text-gray-900"><%= @maintenance_job.description %></p>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-gray-500">Mileage</p>
+          <p class="mt-1 text-gray-900"><%= number_with_delimiter(@maintenance_job.mileage) %> miles</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-6 py-4 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
+      <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider">Cost Breakdown</h3>
+       <%= link_to new_maintenance_job_part_path(@maintenance_job), class: "text-sm text-primary-600 font-medium hover:text-primary-900" do %>
+         + Add Part
+       <% end %>
+    </div>
+    
+    <table class="w-full text-left">
+      <thead class="bg-white">
         <tr>
-          <td class="border px-4 py-2"><%= part.name %></td>
-          <td class="border px-4 py-2"><%= number_to_currency(part.price) %></td>
-          <td class="border px-4 py-2">
-            <%= link_to 'Edit', edit_maintenance_job_part_path(@maintenance_job, part), class: 'text-yellow-600 hover:text-yellow-900 mr-2' %>
-            <%= link_to 'Delete', maintenance_job_part_path(@maintenance_job, part), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'text-red-600 hover:text-red-900' %>
-          </td>
+          <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
+          <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-right">Cost</th>
+          <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-right">Actions</th>
         </tr>
-      <% end %>
-      <tr class="font-bold">
-        <td class="border px-4 py-2">Total</td>
-        <td class="border px-4 py-2" colspan="2"><%= number_to_currency(@maintenance_job.total_cost) %></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <%= link_to 'Add Part', new_maintenance_job_part_path(@maintenance_job), class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block" %>
+      </thead>
+      <tbody class="divide-y divide-gray-100 bg-white">
+        <tr>
+          <td class="px-6 py-4 text-sm text-gray-900">Base Labor / Service</td>
+          <td class="px-6 py-4 text-sm text-gray-900 text-right"><%= number_to_currency(@maintenance_job.price) %></td>
+          <td class="px-6 py-4 text-right"></td>
+        </tr>
+        <% @maintenance_job.parts.each do |part| %>
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 text-sm text-gray-900"><%= part.name %></td>
+            <td class="px-6 py-4 text-sm text-gray-900 text-right"><%= number_to_currency(part.price) %></td>
+            <td class="px-6 py-4 text-right text-sm font-medium space-x-2">
+              <%= link_to 'Edit', edit_maintenance_job_part_path(@maintenance_job, part), class: 'text-amber-600 hover:text-amber-900' %>
+              <%= link_to 'Delete', maintenance_job_part_path(@maintenance_job, part), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'text-red-600 hover:text-red-900' %>
+            </td>
+          </tr>
+        <% end %>
+        <tr class="bg-gray-50">
+          <td class="px-6 py-4 text-sm font-bold text-gray-900">Total</td>
+          <td class="px-6 py-4 text-sm font-bold text-gray-900 text-right"><%= number_to_currency(@maintenance_job.total_cost) %></td>
+          <td class="px-6 py-4"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <% if @maintenance_job.receipt.attached? %>
-    <div class="mt-4">
-      <h3 class="text-lg font-bold">Receipt</h3>
-      <%= image_tag @maintenance_job.receipt, class: "max-w-full h-auto" %>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">Receipt</h3>
+      <div class="rounded-lg overflow-hidden border border-gray-200">
+        <%= image_tag @maintenance_job.receipt, class: "max-w-full h-auto" %>
+      </div>
     </div>
   <% end %>
-
-
-  <%= link_to 'Edit', edit_car_maintenance_job_path(@car, @maintenance_job), class: "text-yellow-500 hover:underline mt-4 inline-block" %>
-  <%= link_to 'Back to Car', car_path(@car), class: "text-blue-500 hover:underline mt-4 inline-block" %>
 </div>

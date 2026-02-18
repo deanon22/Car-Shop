@@ -1,0 +1,63 @@
+<div class="min-h-[70vh] flex flex-col items-center justify-center">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="flex justify-center text-primary-600 mb-6">
+      <div class="p-3 bg-white rounded-xl shadow-md ring-1 ring-gray-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+          <path d="M11 7h2v6h-2zm0 8h2v2h-2z"/>
+        </svg>
+      </div>
+    </div>
+    <h2 class="text-center text-3xl font-extrabold text-gray-900 tracking-tight">Create your account</h2>
+    <p class="mt-2 text-center text-sm text-gray-600">
+      Join Monexa to manage your garage efficienty
+    </p>
+  </div>
+
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-white py-8 px-4 shadow-xl shadow-gray-200/50 rounded-2xl ring-1 ring-gray-100 sm:px-10 border-t-4 border-primary-600 relative overflow-hidden">
+      <!-- Decorative background blur -->
+      <div class="absolute top-0 right-0 -mt-2 -mr-2 w-24 h-24 bg-primary-50 rounded-full blur-2xl opacity-50 pointer-events-none"></div>
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-6 relative z-10" }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <div>
+          <%= f.label :email, class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <div class="mt-1">
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition-shadow duration-200" %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.label :password, class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <% if @minimum_password_length %>
+            <em class="text-xs text-gray-400 float-right mt-1">(<%= @minimum_password_length %> characters minimum)</em>
+          <% end %>
+          <div class="mt-1">
+            <%= f.password_field :password, autocomplete: "new-password", class: "appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition-shadow duration-200" %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.label :password_confirmation, class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <div class="mt-1">
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition-shadow duration-200" %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.submit "Sign Up", class: "w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 transform hover:-translate-y-0.5" %>
+        </div>
+      <% end %>
+
+    </div>
+
+    <div class="mt-6 text-center">
+      <p class="text-sm text-gray-600">
+        Already have an account? 
+        <%= link_to "Log in", new_session_path(resource_name), class: "font-medium text-primary-600 hover:text-primary-500 transition-colors duration-200" %>
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,92 +1,155 @@
-<%= form_with(model: [car, maintenance_job], local: true, class: "w-full max-w-lg") do |form| %>
+<%= form_with(model: [car, maintenance_job], local: true, class: "space-y-8") do |form| %>
   <% if maintenance_job.errors.any? %>
-    <div id="error_explanation" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-      <strong class="font-bold">Holy smokes!</strong>
-      <span class="block sm:inline"><%= pluralize(maintenance_job.errors.count, "error") %> prohibited this maintenance_job from being saved:</span>
-      <ul>
-        <% maintenance_job.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+    <div class="rounded-xl bg-red-50 p-4 border border-red-100 ring-1 ring-red-500/10">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800"><%= pluralize(maintenance_job.errors.count, "error") %> prohibited this job from being saved:</h3>
+          <div class="mt-2 text-sm text-red-700">
+            <ul class="list-disc pl-5 space-y-1">
+              <% maintenance_job.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   <% end %>
 
-  <div class="flex flex-wrap -mx-3 mb-6">
-    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-      <%= form.label :date, class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
-      <%= form.datetime_select :date, {}, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="col-span-1">
+      <%= form.label :date, class: "block text-sm font-semibold text-gray-700 mb-2" %>
+      <%= form.datetime_select :date, {}, class: "appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white" %>
     </div>
-    <div class="w-full md:w-1/2 px-3">
-      <%= form.label :mileage, class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
-      <%= form.number_field :mileage, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" %>
+    
+    <div class="col-span-1">
+      <%= form.label :mileage, class: "block text-sm font-semibold text-gray-700 mb-2" %>
+      <div class="relative rounded-md shadow-sm">
+        <%= form.number_field :mileage, class: "appearance-none block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm", placeholder: "e.g. 15000" %>
+        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+          <span class="text-gray-500 sm:text-sm">mi</span>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="flex flex-wrap -mx-3 mb-6">
-    <div class="w-full px-3">
-      <%= form.label :description, class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
-      <%= form.text_area :description, rows: 4, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" %>
-    </div>
+
+  <div>
+    <%= form.label :description, class: "block text-sm font-semibold text-gray-700 mb-2" %>
+    <%= form.text_area :description, rows: 4, class: "appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm", placeholder: "Describe the service performed..." %>
   </div>
-  <div class="flex flex-wrap -mx-3 mb-6">
-    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-      <%= form.label :price, class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
-      <%= form.text_field :price, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" %>
-    </div>
-    <div class="w-full px-3" data-controller="nested-form">
-      <%= form.label :parts, class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
-      <div id="parts" data-nested-form-target="container">
+
+  <div>
+      <%= form.label :price, "Base Service Price", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+      <div class="relative rounded-md shadow-sm w-full md:w-1/2">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <span class="text-gray-500 sm:text-sm">$</span>
+        </div>
+        <%= form.text_field :price, class: "appearance-none block w-full pl-7 px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm", placeholder: "0.00" %>
+      </div>
+  </div>
+
+  <div class="bg-gray-50 p-6 rounded-xl border border-gray-200" data-controller="nested-form">
+      <div class="flex items-center justify-between mb-4 border-b border-gray-200 pb-2">
+        <h3 class="text-lg font-medium text-gray-900">Parts Used</h3>
+        <button type="button" data-action="nested-form#add" class="inline-flex items-center px-3 py-1.5 border border-primary-200 shadow-sm text-xs font-medium rounded-md text-primary-700 bg-primary-50 hover:bg-primary-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+          <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Add Part
+        </button>
+      </div>
+      
+      <div id="parts" data-nested-form-target="target" class="space-y-3">
         <%= form.fields_for :parts do |part_form| %>
-          <div class="flex flex-wrap -mx-3 mb-2 nested-fields" data-new-record="<%= part_form.object.new_record? %>">
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <%= part_form.label :name, "Part Name", class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
-              <%= part_form.text_field :name, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white", placeholder: "Part Name" %>
+          <div class="flex items-start gap-4 nested-fields bg-white p-4 rounded-lg shadow-sm border border-gray-100 transition duration-200 hover:shadow-md" data-new-record="<%= part_form.object.new_record? %>">
+            <div class="flex-grow grid grid-cols-1 md:grid-cols-3 gap-4">
+               <div class="md:col-span-2">
+                  <%= part_form.label :name, "Part Name", class: "block text-xs font-medium text-gray-500 mb-1" %>
+                  <%= part_form.text_field :name, class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm focus:ring-primary-500 focus:border-primary-500", placeholder: "e.g. Oil Filter" %>
+               </div>
+               <div class="md:col-span-1">
+                  <%= part_form.label :price, "Price", class: "block text-xs font-medium text-gray-500 mb-1" %>
+                  <div class="relative rounded-md shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <span class="text-gray-500 sm:text-xs">$</span>
+                    </div>
+                    <%= part_form.text_field :price, class: "block w-full pl-6 px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm focus:ring-primary-500 focus:border-primary-500", placeholder: "0.00" %>
+                  </div>
+               </div>
             </div>
-            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <%= part_form.label :price, "Price", class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
-              <%= part_form.text_field :price, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white", placeholder: "0.00" %>
-            </div>
-            <div class="w-full md:w-1/6 px-3 flex items-center pt-6">
+            
+            <div class="flex-shrink-0 pt-6">
               <%= part_form.hidden_field :_destroy %>
-              <button type="button" data-action="nested-form#remove" class="text-red-500 hover:text-red-700 font-bold">Remove</button>
+              <button type="button" data-action="nested-form#remove" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Remove part">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                   <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                 </svg>
+              </button>
             </div>
           </div>
         <% end %>
       </div>
-      <div class="mt-2">
-        <button type="button" data-action="nested-form#add" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">
-          Add Part
-        </button>
-      </div>
-
+ 
       <template data-nested-form-target="template">
         <%= form.fields_for :parts, Part.new, child_index: 'NEW_RECORD' do |part_form| %>
-          <div class="flex flex-wrap -mx-3 mb-2 nested-fields" data-new-record="true">
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <%= part_form.label :name, "Part Name", class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
-              <%= part_form.text_field :name, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white", placeholder: "Part Name" %>
+          <div class="flex items-start gap-4 nested-fields bg-white p-4 rounded-lg shadow-sm border border-gray-100 transition duration-200 hover:shadow-md" data-new-record="true">
+            <div class="flex-grow grid grid-cols-1 md:grid-cols-3 gap-4">
+               <div class="md:col-span-2">
+                  <%= part_form.label :name, "Part Name", class: "block text-xs font-medium text-gray-500 mb-1" %>
+                  <%= part_form.text_field :name, class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm focus:ring-primary-500 focus:border-primary-500", placeholder: "e.g. Oil Filter" %>
+               </div>
+               <div class="md:col-span-1">
+                  <%= part_form.label :price, "Price", class: "block text-xs font-medium text-gray-500 mb-1" %>
+                   <div class="relative rounded-md shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <span class="text-gray-500 sm:text-xs">$</span>
+                    </div>
+                    <%= part_form.text_field :price, class: "block w-full pl-6 px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm focus:ring-primary-500 focus:border-primary-500", placeholder: "0.00" %>
+                  </div>
+               </div>
             </div>
-            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <%= part_form.label :price, "Price", class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
-              <%= part_form.text_field :price, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white", placeholder: "0.00" %>
-            </div>
-            <div class="w-full md:w-1/6 px-3 flex items-center pt-6">
+            
+            <div class="flex-shrink-0 pt-6">
               <%= part_form.hidden_field :_destroy %>
-              <button type="button" data-action="nested-form#remove" class="text-red-500 hover:text-red-700 font-bold">Remove</button>
+               <button type="button" data-action="nested-form#remove" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Remove part">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                   <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                 </svg>
+              </button>
             </div>
           </div>
         <% end %>
       </template>
-    </div>
   </div>
-  <div class="flex flex-wrap -mx-3 mb-6">
-    <div class="w-full px-3">
-      <%= form.label :receipt, class: "block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" %>
-      <%= form.file_field :receipt, class: "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" %>
+
+  <div>
+    <%= form.label :receipt, class: "block text-sm font-semibold text-gray-700 mb-2" %>
+    <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-primary-400 transition-colors">
+      <div class="space-y-1 text-center">
+        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <div class="flex text-sm text-gray-600">
+          <%= form.label :receipt, class: "relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500" do %>
+            <span>Upload a file</span>
+            <%= form.file_field :receipt, class: "sr-only" %>
+          <% end %>
+          <p class="pl-1">or drag and drop</p>
+        </div>
+        <p class="text-xs text-gray-500">
+          PNG, JPG, PDF up to 10MB
+        </p>
+      </div>
     </div>
   </div>
 
-  <div class="flex items-center justify-between">
-    <%= form.submit class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
-    <%= link_to 'Cancel', car_path(car), class: "inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" %>
+  <div class="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200">
+    <%= link_to 'Cancel', car_path(car), class: "bg-white py-2.5 px-5 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors" %>
+    <%= form.submit class: "cursor-pointer inline-flex justify-center py-2.5 px-5 border border-transparent shadow-md text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-200 transform hover:-translate-y-0.5" %>
   </div>
 <% end %>

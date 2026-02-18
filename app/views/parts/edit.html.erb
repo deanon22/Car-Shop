@@ -1,7 +1,10 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">Editing Part</h1>
+<div class="max-w-lg mx-auto">
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Edit Part Details</h1>
+    <p class="text-gray-500 text-sm mt-1">Update part information.</p>
+  </div>
 
-  <%= render "form", maintenance_job: @maintenance_job, part: @part %>
-
-  <%= link_to 'Back', car_maintenance_job_path(@maintenance_job.car, @maintenance_job), class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+    <%= render "form", maintenance_job: @maintenance_job, part: @part %>
+  </div>
 </div>

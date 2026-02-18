@@ -1,1 +1,3 @@
-# Empty fixture file
+one:
+  email: test@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>

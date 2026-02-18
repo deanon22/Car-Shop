@@ -1,5 +1,10 @@
-<div class="w-full">
-  <h1 class="text-2xl font-bold mb-4">New Car</h1>
+<div class="max-w-2xl mx-auto">
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Add New Car</h1>
+    <p class="text-gray-500 text-sm mt-1">Enter the details of your vehicle to start tracking maintenance.</p>
+  </div>
 
-  <%= render 'form', car: @car %>
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+    <%= render 'form', car: @car %>
+  </div>
 </div>
