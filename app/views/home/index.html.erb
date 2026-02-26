@@ -7,18 +7,31 @@
     </div>
     
     <div class="mt-4 md:mt-0 flex space-x-3">
-      <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium shadow-sm hover:bg-gray-50 flex items-center">
-        This Month
-        <svg class="ml-2 h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium shadow-sm hover:bg-gray-50 flex items-center">
+      <div class="relative" data-controller="dropdown" data-action="click@window->dropdown#hide">
+        <button type="button" data-action="click->dropdown#toggle" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium shadow-sm hover:bg-gray-50 flex items-center">
+          <%= @range_label %>
+          <svg class="ml-2 h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        
+        <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+          <div class="py-1" role="menu" aria-orientation="vertical">
+            <%= link_to "This Month", root_path(range: "this_month"), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 #{'bg-gray-50 font-semibold text-primary-600' if @range == 'this_month'}", role: "menuitem" %>
+            <%= link_to "Last 3 Months", root_path(range: "last_3_months"), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 #{'bg-gray-50 font-semibold text-primary-600' if @range == 'last_3_months'}", role: "menuitem" %>
+            <%= link_to "Last 6 Months", root_path(range: "last_6_months"), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 #{'bg-gray-50 font-semibold text-primary-600' if @range == 'last_6_months'}", role: "menuitem" %>
+            <%= link_to "Last Year", root_path(range: "last_year"), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 #{'bg-gray-50 font-semibold text-primary-600' if @range == 'last_year'}", role: "menuitem" %>
+            <%= link_to "All Time", root_path(range: "all_time"), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 #{'bg-gray-50 font-semibold text-primary-600' if @range == 'all_time'}", role: "menuitem" %>
+          </div>
+        </div>
+      </div>
+
+      <%= link_to root_path(range: @range, format: :csv), class: "bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium shadow-sm hover:bg-gray-50 flex items-center" do %>
         <svg class="mr-2 h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
         </svg>
         Export
-      </button>
+      <% end %>
     </div>
   </div>
 
@@ -98,67 +111,73 @@
           </svg>
         </button>
       </div>
-      <!-- Placeholder for Grid/Graph -->
-      <div class="relative h-64 w-full bg-gray-50 rounded-lg flex items-end justify-between px-4 pb-0 overflow-hidden">
-        <!-- Mock graph lines or bars -->
-         <% [30, 45, 35, 60, 50, 75, 65, 80, 70, 55, 60, 40].each_with_index do |h, i| %>
-            <div class="w-full mx-1 bg-primary-200 rounded-t-sm relative group" style="height: <%= h %>%;">
-               <div class="absolute bottom-0 w-full bg-primary-500 transition-all duration-500 group-hover:bg-primary-600" style="height: <%= h * 0.7 %>%;"></div>
-            </div>
-         <% end %>
-         <!-- Horizontal grid lines -->
-         <div class="absolute inset-x-0 top-1/4 h-px bg-gray-200 border-dashed border-b"></div>
-         <div class="absolute inset-x-0 top-2/4 h-px bg-gray-200 border-dashed border-b"></div>
-         <div class="absolute inset-x-0 top-3/4 h-px bg-gray-200 border-dashed border-b"></div>
+      <!-- Enhanced Bar Chart -->
+      <div class="relative h-64 w-full bg-white rounded-lg flex items-end justify-between px-2 pb-0 overflow-hidden">
+        <% @monthly_data.each do |data| %>
+          <% height_percent = @max_monthly > 0 ? (data[:total] / @max_monthly * 85) : 0 %>
+          <div class="flex-1 flex flex-col items-center group px-1 h-full justify-end">
+            <!-- Value on transition -->
+             <div class="absolute bottom-0 w-full max-w-[40px] bg-gradient-to-t from-primary-600 to-primary-400 transition-all duration-700 ease-out group-hover:from-primary-700 group-hover:to-primary-500 rounded-t-md shadow-sm" 
+                  style="height: <%= height_percent == 0 && data[:total] > 0 ? 5 : height_percent %>%;">
+                
+                <!-- Enhanced Tooltip -->
+                <div class="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[11px] font-bold py-1.5 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none transform translate-y-2 group-hover:translate-y-0 shadow-xl z-20">
+                  <div class="text-gray-400 text-[9px] uppercase tracking-wider mb-0.5"><%= data[:month] %></div>
+                  <%= number_to_currency(data[:total]) %>
+                  <!-- Triangle for tooltip -->
+                  <div class="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-gray-900"></div>
+                </div>
+             </div>
+          </div>
+        <% end %>
+
+        <!-- Horizontal grid lines -->
+        <div class="absolute inset-x-0 top-0 h-px bg-gray-100"></div>
+        <div class="absolute inset-x-0 top-1/4 h-px bg-gray-50 pointer-events-none"></div>
+        <div class="absolute inset-x-0 top-2/4 h-px bg-gray-50 pointer-events-none"></div>
+        <div class="absolute inset-x-0 top-3/4 h-px bg-gray-50 pointer-events-none"></div>
       </div>
-       <div class="flex justify-between text-xs text-gray-400 mt-2 px-1">
-         <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
-       </div>
+      
+      <div class="flex justify-between text-[10px] font-medium text-gray-400 mt-4 px-2">
+        <% @monthly_data.each do |data| %>
+          <span class="flex-1 text-center"><%= data[:month].upcase %></span>
+        <% end %>
+      </div>
     </div>
 
-    <!-- Donut Chart / Side Panel -->
+    <!-- Spending per Car Chart -->
     <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
        <div class="flex items-center justify-between mb-6">
-        <h3 class="text-lg font-semibold text-gray-900">Job Types</h3>
-        <button class="text-gray-400 hover:text-gray-600">
-          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
-          </svg>
-        </button>
+        <h3 class="text-lg font-semibold text-gray-900">Spending per Car</h3>
       </div>
       <div class="relative flex items-center justify-center h-56">
-        <!-- CSS Donut Chart Mock -->
+        <!-- CSS Donut Chart Mockup using real total -->
         <div class="w-40 h-40 rounded-full border-8 border-primary-500 flex items-center justify-center relative">
-           <div class="w-40 h-40 rounded-full border-8 border-transparent border-t-purple-500 absolute rotate-45"></div>
-           <div class="w-40 h-40 rounded-full border-8 border-transparent border-r-orange-500 absolute rotate-12"></div>
+           <% colors = ['border-t-purple-500', 'border-r-orange-500', 'border-b-pink-500', 'border-l-blue-500'] %>
+           <% @spending_by_car.each_with_index do |data, i| %>
+             <div class="w-40 h-40 rounded-full border-8 border-transparent <%= colors[i % colors.length] %> absolute" style="transform: rotate(<%= i * 45 %>deg);"></div>
+           <% end %>
            <div class="text-center">
-             <p class="text-2xl font-bold text-gray-900"><%= @total_jobs %></p>
-             <p class="text-xs text-gray-500">Jobs</p>
+             <p class="text-xl font-bold text-gray-900"><%= number_to_currency(@total_spent) %></p>
+             <p class="text-xs text-gray-500">Filtered Total</p>
            </div>
         </div>
       </div>
-      <div class="space-y-3 mt-4">
-        <div class="flex items-center justify-between text-sm">
-          <div class="flex items-center">
-            <span class="w-3 h-3 rounded-full bg-primary-500 mr-2"></span>
-            <span class="text-gray-600">Regular Service</span>
+      <div class="space-y-3 mt-4 overflow-y-auto max-h-48">
+        <% @spending_by_car.each_with_index do |data, i| %>
+          <% percentage = @total_spent > 0 ? (data[:total] / @total_spent * 100).round : 0 %>
+          <% dot_colors = ['bg-purple-500', 'bg-orange-500', 'bg-pink-500', 'bg-blue-500'] %>
+          <div class="flex items-center justify-between text-sm">
+            <div class="flex items-center">
+              <span class="w-3 h-3 rounded-full <%= dot_colors[i % dot_colors.length] %> mr-2"></span>
+              <span class="text-gray-600 truncate max-w-[120px]" title="<%= data[:name] %>"><%= data[:name] %></span>
+            </div>
+            <span class="font-medium text-gray-900"><%= number_to_currency(data[:total]) %> (<%= percentage %>%)</span>
           </div>
-          <span class="font-medium text-gray-900">45%</span>
-        </div>
-        <div class="flex items-center justify-between text-sm">
-           <div class="flex items-center">
-            <span class="w-3 h-3 rounded-full bg-purple-500 mr-2"></span>
-            <span class="text-gray-600">Repairs</span>
-          </div>
-          <span class="font-medium text-gray-900">30%</span>
-        </div>
-         <div class="flex items-center justify-between text-sm">
-           <div class="flex items-center">
-            <span class="w-3 h-3 rounded-full bg-orange-500 mr-2"></span>
-            <span class="text-gray-600">Upgrades</span>
-          </div>
-          <span class="font-medium text-gray-900">25%</span>
-        </div>
+        <% end %>
+        <% if @spending_by_car.empty? %>
+          <p class="text-sm text-gray-500 italic text-center">No data for this range.</p>
+        <% end %>
       </div>
     </div>
   </div>

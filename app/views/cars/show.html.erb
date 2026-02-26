@@ -26,7 +26,7 @@
             <td class="border px-4 py-2">
               <%= link_to 'Show', [@car, job], class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-xs mr-2 inline-block" %>
               <%= link_to 'Edit', edit_car_maintenance_job_path(@car, job), class: "bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded text-xs mr-2 inline-block" %>
-              <%= button_to 'Destroy', [@car, job], method: :delete, form: { data: { turbo_confirm: 'Are you sure you want to delete this Maintenance Job?' } }, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-xs inline-block" %>
+              <%= button_to 'Delete', [@car, job], method: :delete, data: { turbo_confirm: "Are you sure you want to delete the maintenance job from #{job.date.strftime('%B %d, %Y')}?" }, form: { class: 'inline' }, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-xs inline-block" %>
             </td>
           </tr>
         <% end %>
@@ -34,6 +34,7 @@
     </table>
   </div>
 
-  <%= link_to 'Edit Car', edit_car_path(@car), class: "text-yellow-500 hover:underline mt-4 inline-block" %>
+  <%= link_to 'Edit Car', edit_car_path(@car), class: "text-yellow-500 hover:underline mt-4 inline-block mr-4" %>
+  <%= button_to 'Delete Car', @car, method: :delete, data: { turbo_confirm: "Are you sure you want to delete your #{@car.year} #{@car.make} #{@car.model}?" }, form: { class: "inline-block mr-4" }, class: "text-red-500 hover:underline mt-4" %>
   <%= link_to 'Back to Cars', cars_path, class: "text-blue-500 hover:underline mt-4 inline-block" %>
 </div>

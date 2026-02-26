@@ -1,7 +1,7 @@
 class MaintenanceJobsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_car
-  before_action :set_maintenance_job, only: [:show, :edit, :update, :destroy]
+  before_action :set_maintenance_job, only: [:show, :edit, :update, :destroy, :attach_receipts, :delete_receipt]
 
   def show
   end
@@ -36,6 +36,26 @@ class MaintenanceJobsController < ApplicationController
     redirect_to car_path(@car), notice: 'Maintenance job was successfully destroyed.'
   end
 
+  def attach_receipts
+    files = params.dig(:maintenance_job, :receipts)
+    if files.present?
+      @maintenance_job.receipts.attach(files)
+      redirect_to car_maintenance_job_path(@car, @maintenance_job), notice: "#{files.size} receipt(s) uploaded successfully."
+    else
+      redirect_to car_maintenance_job_path(@car, @maintenance_job), alert: 'Please select at least one file to upload.'
+    end
+  end
+
+  def delete_receipt
+    attachment = ActiveStorage::Attachment.find(params[:attachment_id])
+    if attachment.record == @maintenance_job
+      attachment.purge
+      redirect_to car_maintenance_job_path(@car, @maintenance_job), notice: 'Receipt deleted.'
+    else
+      redirect_to car_maintenance_job_path(@car, @maintenance_job), alert: 'Could not delete receipt.'
+    end
+  end
+
   private
 
   def set_car
@@ -47,6 +67,6 @@ class MaintenanceJobsController < ApplicationController
   end
 
   def maintenance_job_params
-    params.require(:maintenance_job).permit(:date, :mileage, :description, :price, :receipt, parts_attributes: [:id, :name, :price, :_destroy])
+    params.require(:maintenance_job).permit(:date, :mileage, :description, :price, receipts: [], parts_attributes: [:id, :name, :price, :_destroy])
   end
 end

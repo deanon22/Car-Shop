@@ -3,7 +3,12 @@ Rails.application.routes.draw do
   root "home#index"
   get "home/index"
   resources :cars do
-    resources :maintenance_jobs
+    resources :maintenance_jobs do
+      member do
+        post :attach_receipts
+        delete :delete_receipt
+      end
+    end
   end
 
   resources :maintenance_jobs, only: [] do

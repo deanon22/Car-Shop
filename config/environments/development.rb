@@ -29,6 +29,7 @@ Rails.application.configure do
   config.cache_store = :memory_store
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
+  # Switch to :aws once AWS environment variables are configured.
   config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
